@@ -1,0 +1,32 @@
+{
+    "action_type": "continuous",
+    "batch_size": 100,
+    "beta_b": 0.1,
+    "beta_s": 1.0,
+    "beta_z": 0.1,
+    "cont_action_dim": 2,
+    "device": "cuda",
+    "hidden_dim": 64,
+    "iterations": 2000,
+    "latent_dim": 16,
+    "latent_dist": "concrete",
+    "learning_rate": 0.001,
+    "log_interval": 5,
+    "mode": "statediff+action",
+    "num_actions": 5,
+    "num_segments": 4,
+    "prior_rate": 10,
+    "reproducibility": {
+        "command_line": "python train.py --rollouts_path rollouts/parking.pkl --latent_dist concrete --latent_dim 16 --num_segments 4 --cont_action_dim 2 --prior_rate 10 --mode statediff+action --run_name parking-concrete-16d-sdiff1 --state_dim 12 --beta_s 1 --wb",
+        "git_has_uncommitted_changes": true,
+        "git_root": "/iliad/u/megha/teaching",
+        "git_url": "https://github.com/meghabyte/teaching/tree/8d95159b57a41555a779c6f6fe15dbf5cb536293",
+        "time": "Tue Jan  4 00:06:45 2022"
+    },
+    "rollouts_path": "rollouts/parking.pkl",
+    "run_name": "parking-concrete-16d-sdiff1",
+    "save_dir": "results/parking-concrete-16d-sdiff1",
+    "save_interval": 5,
+    "state_dim": 12,
+    "wb": true
+}

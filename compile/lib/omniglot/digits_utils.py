@@ -114,8 +114,8 @@ def get_chars_dict():
     for fni in range(len(CHARACTER_FNS)):
         fn = CHARACTER_FNS[fni]
         fake_fn = FAKE_FNS[fni]
-        fn_stk = "omniglot/"+ fn + '.txt'
-        fn_img = "omniglot/"+ fn + '.png'			
+        fn_stk =  fn + '.txt'
+        fn_img = fn + '.png'			
         char_motor = load_motor(fn_stk)
         char_image = load_img(fn_img)
         drawing = char_motor

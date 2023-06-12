@@ -1,6 +1,7 @@
 """ Adapted from https://github.com/tkipf/compile
-Example call: 
+Example calls: 
 python train_compile.py  --iterations=5 --rollouts_path_train=expert-rollouts/parking_train_1683450947.pkl --rollouts_path_eval=expert-rollouts/parking_eval_1683450947.pkl --latent_dist concrete --latent_dim 4 --num_segments 4 --cont_action_dim 2 --prior_rate 10 --mode state+action --run_name parking-concrete-4d-state1 --state_dim 12 --beta_s 1
+python train_compile.py --rollouts_path_train expert-rollouts/drawing_train_1686529312.pkl --rollouts_path_eval expert-rollouts/drawing_eval_1686529312.pkl  --latent_dist concrete --latent_dim 16 --num_segments 8 --iterations 1 --mode action --run_name drawing-concrete-16d-action0 --batch_size 50 --learning_rate 0.01 --beta_s 0.0
 """
 
 import os
@@ -37,11 +38,14 @@ for step in range(args.iterations):
     batch_num = 0
     dl_iter_train = iter(dl_train)
     for batch in dl_iter_train:
+        print(batch_num)
         states, actions, rewards, lengths, seeds = batch
 
         # Run forward pass.
         model.train()
+        print(batch_num)
         outputs = model.forward(states, actions, lengths)
+        print(batch_num)
         loss, nll, kl_z, kl_b = utils.get_losses(states, actions, outputs, args)
 
         train_loss += nll.item() # This is just the NLL loss (without regularizers) - #TODO: Log all the terms

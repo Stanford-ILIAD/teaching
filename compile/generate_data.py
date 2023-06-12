@@ -19,6 +19,7 @@ from torch.distributions import Categorical
 from torch import Tensor as T
 from stable_baselines3 import SAC
 from imitation.data.types import TrajectoryWithRew
+from lib.omniglot.digits_utils import get_data_sequence
 from envs import highway_env
 from datetime import datetime
 dt = datetime.today()
@@ -27,6 +28,32 @@ timestamp = str(int(dt.timestamp()))
 random.seed(0)
 np.random.seed(0)
 
+# Writing Environment
+def get_drawing_rollouts(data_file=""):
+    # Load policy
+    word_sequences = pickle.load(open(data_file,"rb"))
+    alphabet = pickle.load(open("lib/omniglot/final_chars_dict", "rb"))
+    # Get rollouts
+    trajectories = []
+    max_state = 0
+    for t in tqdm(range(min(500, len(word_sequences)))):
+        seed = t
+        word = word_sequences[seed]
+        states, rews, actions = get_data_sequence(alphabet, word, width=500, height=300)
+        infos = [{"seed":seed} for i in range(len(states))]
+        if(len(states) > max_state):
+            max_state = len(states)
+        trajectories.append(TrajectoryWithRew(obs=states, acts=actions[:-1], rews=np.array(rews[:-1]), infos=infos[:-1]))
+    random.shuffle(trajectories)
+    split_size = int(0.5*len(trajectories))
+    eval_trajectories = trajectories[:split_size]
+    train_trajectories = trajectories[split_size:] 
+    # Write rollouts
+    with open("expert-rollouts/drawing_train_"+timestamp+".pkl", "wb") as f:
+        pickle.dump(train_trajectories, f)
+    with open("expert-rollouts/drawing_eval_"+timestamp+".pkl", "wb") as f:
+        pickle.dump(eval_trajectories, f)
+    
 # Parking Environment
 def get_parking_rollouts(num_episodes=10000):
 
@@ -77,3 +104,4 @@ def get_parking_rollouts(num_episodes=10000):
         pickle.dump(eval_trajectories, f)
 
 get_parking_rollouts(num_episodes=100) 
+get_drawing_rollouts(data_file="lib/omniglot/1k_words_for_compile.pkl")

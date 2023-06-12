@@ -14,7 +14,7 @@ if sys_pf == 'darwin':
 	matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 sys.path.append(os.path.abspath('..'))
-from writing_utils import *
+from .writing_utils import *
 
 # these refer to file IDs in the original Omniglot dataset
 CHARACTER_FNS = ["0109_04","0115_03","0119_04","0120_02","0128_02"]
